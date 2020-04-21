@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ctsi.dao.ReportDao">
+    <resultMap id="reportMap" type="com.ctsi.domain.ReportInfo">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="createtime" property="createTime" jdbcType="DATE"/>
+        <result column="creator" property="creator" jdbcType="VARCHAR"/>
+        <result column="orgId" property="orgId" jdbcType="VARCHAR"/>
+        <result column="orgName" property="orgName" jdbcType="VARCHAR"/>
+        <result column="scope" property="scope" jdbcType="INTEGER"/>
+        <result column="scopeDesc" property="scopeDesc" jdbcType="VARCHAR"/>
+        <result column="cycle" property="cycle" jdbcType="INTEGER"/>
+        <result column="cycleDesc" property="cycleDesc" jdbcType="VARCHAR"/>
+        <result column="typeId" property="typeId" jdbcType="INTEGER"/>
+        <result column="typeName" property="typeName" jdbcType="VARCHAR"/>
+    </resultMap>
+    <resultMap id="reportItemMap" type="com.ctsi.domain.ReportItem">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="reportName" property="reportName" jdbcType="VARCHAR"/>
+        <result column="creator" property="creator" jdbcType="VARCHAR"/>
+        <result column="fileName" property="fileName" jdbcType="VARCHAR"/>
+        <result column="createtime" property="createTime" jdbcType="DATE"/>
+        <result column="starttime" property="startTime" jdbcType="DATE"/>
+        <result column="endtime" property="endTime" jdbcType="DATE"/>
+        <result column="orgName" property="orgName" jdbcType="VARCHAR"/>
+        <result column="typeName" property="typeName" jdbcType="VARCHAR"/>
+    </resultMap>
+    <resultMap id="cycleMap" type="com.ctsi.model.ReportTypeInfo">
+        <id property="typeId" column="typeId" jdbcType="INTEGER"/>
+        <result column="typeName" property="typeName" jdbcType="VARCHAR"/>
+        <result column="fid" property="fid" jdbcType="VARCHAR"/>
+        <collection property="children" javaType="list" ofType="com.ctsi.model.CycleInfo">
+            <id property="id" column="id"/>
+            <result property="typeId" column="typeid"/>
+            <result property="cycle" column="cycle"/>
+            <result property="cycleDesc" column="cycleDesc"/>
+        </collection>
+    </resultMap>
+    <insert id="createReport" useGeneratedKeys="true" keyProperty="id" parameterType="com.ctsi.domain.ReportInfo">
+       insert into cscp_report (title,createtime,creator,orgId,orgName,scope,scopeDesc,cycle,cycleDesc,typeId,typeName) values (#{title,jdbcType=VARCHAR},sysdate(),#{creator,jdbcType=VARCHAR},#{orgId,jdbcType=VARCHAR},#{orgName,jdbcType=VARCHAR},#{scope,jdbcType=INTEGER},#{scopeDesc,jdbcType=VARCHAR},#{cycle,jdbcType=INTEGER},#{cycleDesc,jdbcType=VARCHAR},#{typeId,jdbcType=INTEGER},#{typeName,jdbcType=VARCHAR})
+    </insert>
+    <update id="modifyReport" parameterType="com.ctsi.domain.ReportInfo">
+        update cscp_report
+        <set>
+            <if test="title != null and title!=''">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="orgId != null and orgId!=''">
+                orgId = #{orgId,jdbcType=VARCHAR},
+            </if>
+            <if test="orgName != null and orgName!=''">
+                orgId = #{orgName,jdbcType=VARCHAR},
+            </if>
+            <if test="scope != null">
+                scope = #{scope,jdbcType=INTEGER},
+            </if>
+            <if test="typeId != null">
+                typeId = #{typeId,jdbcType=INTEGER},
+            </if>
+            <if test="typeName != null and typeName!=''">
+                typeName = #{typeName,jdbcType=VARCHAR},
+            </if>
+            <if test="cycle != null">
+                cycle = #{cycle,jdbcType=INTEGER},
+            </if>
+            <if test="scopeDesc != null and scopeDesc!=''">
+                scopeDesc = #{scopeDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="cycleDesc != null and cycleDesc!=''">
+                cycleDesc = #{cycleDesc,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER} and creator=#{creator,jdbcType=VARCHAR}
+    </update>
+    <insert id="saveReportItem">
+       insert into cscp_report_item (rid,fileName,reportName,creator,createtime,starttime,endtime) values (#{rid,jdbcType=INTEGER},#{fileName,jdbcType=VARCHAR},#{reportName,jdbcType=VARCHAR},#{creator,jdbcType=VARCHAR},#{createTime},#{startTime,jdbcType=DATE},#{endTime,jdbcType=DATE})
+    </insert>
+    <select id="getReport" resultMap="reportMap">
+      SELECT id,title,createtime,creator,orgId,orgName,scope,scopeDesc,cycle,cycleDesc,typeId,typeName FROM cscp_report r
+      <where>
+          1=1
+          <if test="creator!=null and creator!=''">
+              and creator=#{creator,jdbcType=VARCHAR}
+          </if>
+          <if test="title!=null and title!=''">
+              and title like concat('%',#{title,jdbcType=VARCHAR},'%')
+          </if>
+          <if test="orgId != null and orgId!=''">
+              and orgId =#{orgId,jdbcType=VARCHAR}
+          </if>
+          <if test="typeId!=null">
+              and typeId =#{typeId,jdbcType=INTEGER}
+          </if>
+          <if test="startTime!=null and startTime!='' and endTime!=null and endTime!=''">
+              <![CDATA[
+                and date_format(createtime, "%Y-%m-%d")>= date_format(#{startTime},"%Y-%m-%d") and date_format(createtime, "%Y-%m-%d") <= date_format(#{endTime}, "%Y-%m-%d")
+                ]]>
+          </if>
+      </where>
+    </select>
+    <select id="getReportItem" resultMap="reportItemMap">
+        SELECT i.id,i.rid,i.reportName,r.orgName,r.id,r.typeName,i.creator,i.filename,i.createtime,i.starttime,i.endtime FROM cscp_report r,cscp_report_item i
+        <where>
+            i.rid=r.id
+            <if test="reportName!=null and reportName!=''">
+                and reportName like concat('%',#{reportName,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="typeId!=null">
+                and typeId =#{typeId,jdbcType=INTEGER}
+            </if>
+            <if test="orgId != null and orgId!=''">
+                and orgId = #{orgId,jdbcType=VARCHAR},
+            </if>
+            <if test="startTime!=null and startTime!='' and endTime!=null and endTime!=''">
+                <![CDATA[
+                and date_format(createtime, "%Y-%m-%d") >= date_format(#{startTime},"%Y-%m-%d") and date_format(createtime, "%Y-%m-%d") <= date_format(#{end}, "%Y-%m-%d")
+                ]]>
+            </if>
+        </where>
+	</select>
+    <delete id="deleteReport" parameterType="INTEGER">
+        delete from cscp_report where id=#{id,jdbcType=INTEGER}
+    </delete>
+    <delete id="deleteReportItem" parameterType="INTEGER">
+        delete from cscp_report_item where id=#{id,jdbcType=INTEGER}
+    </delete>
+    <select id="getReportType" parameterType="STRING" resultMap="cycleMap">
+        SELECT r.typeid,r.typename,r.fid,c.id,c.cycle,c.cycleDesc,c.typeid FROM cscp_report_type r,cscp_report_cycle c,cscp_org_func f where r.typeid=c.typeid and r.fid=f.func_id and f.org_id=#{orgId,jdbcType=VARCHAR}
+    </select>
+</mapper>

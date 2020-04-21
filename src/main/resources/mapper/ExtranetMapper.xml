@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ctsi.dao.ExtranetMapper">
+    <resultMap id="extranetMap" type="com.ctsi.domain.Extranet">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="fromIP" property="fromIP" jdbcType="VARCHAR"/>
+        <result column="from_port" property="fromPort" jdbcType="VARCHAR"/>
+        <result column="dstIP" property="dstIP" jdbcType="VARCHAR"/>
+        <result column="dst_port" property="dstPort" jdbcType="VARCHAR"/>
+        <result column="discovery_time" property="discoveryTime" jdbcType="DATE"/>
+        <result column="attacked_system" property="attackedSystem" jdbcType="VARCHAR"/>
+        <result column="resport_company" property="resportCompany" jdbcType="VARCHAR"/>
+        <result column="protocol_type" property="protocolType" jdbcType="VARCHAR"/>
+        <result column="fromIP_location" property="fromIPLocation" jdbcType="VARCHAR"/>
+        <result column="fromIP_city" property="fromIPCity" jdbcType="VARCHAR"/>
+        <result column="fromIP_type" property="fromIPType" jdbcType="VARCHAR"/>
+        <result column="risk_level" property="riskLevel" jdbcType="VARCHAR"/>
+        <result column="attack_type" property="attackType" jdbcType="VARCHAR"/>
+        <result column="attack_description" property="attackDescription" jdbcType="VARCHAR"/>
+        <result column="attack_details" property="attackDetails" jdbcType="VARCHAR"/>
+        <result column="potential_impact" property="potentialImpact" jdbcType="VARCHAR"/>
+        <result column="is_handle" property="isHandle" jdbcType="VARCHAR"/>
+        <result column="disposal_measures" property="disposalMeasures" jdbcType="VARCHAR"/>
+        <result column="comment" property="comment" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,fromIP,from_port,dstIP,dst_port,discovery_time,attacked_system,resport_company,protocol_type,fromIP_location,fromIP_city,
+        fromIP_type,risk_level,attack_type,attack_description,attack_details,potential_impact,is_handle,
+        disposal_measures,comment
+    </sql>
+
+    <select id="searchExtranetByCondition" resultMap="extranetMap">
+        select <include refid="Base_Column_List"/> from t_extranet
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="fromIP !=null and fromIP != ''">
+                and fromIP like CONCAT ('%',#{fromIP,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="fromPort != null and fromPort != ''">
+                and from_port like CONCAT ('%',#{fromPort,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="dstIP != null and dstIP != ''">
+                and dstIP like CONCAT ('%',#{dstIP,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="dstPort != null and dstPort != ''">
+                and dst_port like CONCAT ('%',#{dstPort,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="attackedSystem != null and attackedSystem != ''">
+                and attacked_system = #{attackedSystem,jdbcType=VARCHAR}
+            </if>
+            <if test="resportCompany != null and resportCompany != ''">
+                and resport_company = #{resportCompany,jdbcType=VARCHAR}
+            </if>
+            <if test="fromIPLocation != null and fromIPLocation != ''">
+                and fromIP_location = #{fromIPLocation,jdbcType=VARCHAR}
+            </if>
+            <if test="fromIPCity != null and fromIPCity != ''">
+                and fromIP_city = #{fromIPCity,jdbcType=VARCHAR}
+            </if>
+            <if test="fromIPType != null and fromIPType != ''">
+                and fromIP_type = #{fromIPType,jdbcType=VARCHAR}
+            </if>
+            <if test="riskLevel != null and riskLevel != ''">
+                and risk_level = #{prohibitReason,jdbcType=VARCHAR}
+            </if>
+            <if test="attackType != null and attackType != ''">
+                and attack_type = #{attackType,jdbcType=VARCHAR}
+            </if>
+            <if test="attackDescription != null and attackDescription != ''">
+                and attack_description = #{attackDescription,jdbcType=VARCHAR}
+            </if>
+            <if test="attackDetails != null and attackDetails != ''">
+                and attack_details = #{attackDetails,jdbcType=VARCHAR}
+            </if>
+            <if test="potentialImpact != null and potentialImpact != ''">
+                and potential_impact = #{potentialImpact,jdbcType=VARCHAR}
+            </if>
+            <if test="isHandle != null and isHandle != ''">
+                and is_handle = #{isHandle,jdbcType=VARCHAR}
+            </if>
+            <if test="disposalMeasures != null and disposalMeasures != ''">
+                and disposal_measures = #{disposalMeasures,jdbcType=VARCHAR}
+            </if>
+            <if test="comment != null and comment != ''">
+                and comment = #{comment,jdbcType=VARCHAR}
+            </if>
+            <if test="discoveryTime != null">
+                and discovery_time = #{discoveryTime,jdbcType=DATE}
+            </if>
+        </trim>
+    </select>
+    <select id="searchAllExtranet" resultMap="extranetMap">
+        select <include refid="Base_Column_List"/> from t_extranet
+    </select>
+
+    <insert id="addExtranet" parameterType="com.ctsi.domain.Extranet">
+        insert into t_extranet (<include refid="Base_Column_List"/>)
+        values(#{id,jdbcType=VARCHAR},#{fromIP,jdbcType=VARCHAR},#{fromPort,jdbcType=VARCHAR},#{dstIP,jdbcType=VARCHAR},#{dstPort,jdbcType=VARCHAR},
+        #{discoveryTime,jdbcType=DATE},#{attackedSystem,jdbcType=VARCHAR},#{resportCompany,jdbcType=VARCHAR},#{protocolType,jdbcType=VARCHAR},
+        #{fromIPLocation,jdbcType=VARCHAR},#{fromIPCity,jdbcType=VARCHAR},#{fromIPType,jdbcType=VARCHAR},#{riskLevel,jdbcType=VARCHAR},#{attackType,jdbcType=VARCHAR},#{attackDescription,jdbcType=VARCHAR},
+        #{attackDetails,jdbcType=VARCHAR},#{potentialImpact,jdbcType=VARCHAR},#{isHandle,jdbcType=VARCHAR},#{disposalMeasures,jdbcType=VARCHAR},
+        #{comment,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateExtranet" parameterType="com.ctsi.domain.Extranet">
+        <if test="id != null and id != ''">
+            update t_extranet
+            <set>
+                <if test="fromIP !=null and fromIP != ''">
+                    fromIP=#{fromIP,jdbcType=VARCHAR},
+                </if>
+                <if test="fromPort != null and fromPort != ''">
+                    from_port = #{fromPort,jdbcType=VARCHAR},
+                </if>
+                <if test="dstIP != null and dstIP != ''">
+                    dstIP = #{dstIP,jdbcType=VARCHAR},
+                </if>
+                <if test="dstPort != null and dstPort != ''">
+                    dst_port = #{dstPort,jdbcType=VARCHAR},
+                </if>
+                <if test="attackedSystem != null and attackedSystem != ''">
+                    attacked_system = #{attackedSystem,jdbcType=VARCHAR},
+                </if>
+                <if test="resportCompany != null and resportCompany != ''">
+                    resport_company = #{resportCompany,jdbcType=VARCHAR},
+                </if>
+                <if test="protocolType != null and protocolType != ''">
+                    protocol_type = #{protocolType,jdbcType=VARCHAR},
+                </if>
+                <if test="fromIPLocation != null and fromIPLocation != ''">
+                    fromIP_location = #{fromIPLocation,jdbcType=VARCHAR},
+                </if>
+                <if test="fromIPCity != null and fromIPCity != ''">
+                    fromIP_city = #{fromIPCity,jdbcType=VARCHAR},
+                </if>
+                <if test="fromIPType != null and fromIPType != ''">
+                    fromIP_type = #{fromIPType,jdbcType=VARCHAR},
+                </if>
+                <if test="riskLevel != null and riskLevel != ''">
+                    risk_level = #{riskLevel,jdbcType=VARCHAR},
+                </if>
+                <if test="attackType != null and attackType != ''">
+                    attack_type = #{attackType,jdbcType=VARCHAR},
+                </if>
+                <if test="attackDescription != null and attackDescription != ''">
+                    attack_description = #{attackDescription,jdbcType=VARCHAR},
+                </if>
+                <if test="attackDetails != null and attackDetails != ''">
+                    attack_details = #{attackDetails,jdbcType=VARCHAR},
+                </if>
+                <if test="potentialImpact != null and potentialImpact != ''">
+                    potential_impact = #{potentialImpact,jdbcType=VARCHAR},
+                </if>
+                <if test="isHandle != null and isHandle != ''">
+                    is_handle = #{isHandle,jdbcType=VARCHAR},
+                </if>
+                <if test="disposalMeasures != null and disposalMeasures != ''">
+                    disposal_measures = #{disposalMeasures,jdbcType=VARCHAR},
+                </if>
+                <if test="comment != null and comment != ''">
+                    comment = #{comment,jdbcType=VARCHAR},
+                </if>
+                <if test="discoveryTime != null">
+                    discovery_time = #{discoveryTime,jdbcType=DATE}
+                </if>
+            </set>
+            where id=#{id,jdbcType=VARCHAR};
+        </if>
+    </update>
+
+    <delete id="deleteExtranet" parameterType="String">
+        delete from t_extranet where id=#{id,jdbcType=VARCHAR};
+    </delete>
+
+    <select id="queryNumByConditon" resultType="int" parameterType="String">
+        select count(fromIP) from t_extranet where fromIP=#{fromIP,jdbcType=VARCHAR} and from_port = #{fromPort,jdbcType=VARCHAR}
+        and dstIP = #{dstIP,jdbcType=VARCHAR} and dst_port = #{dstPort,jdbcType=VARCHAR};
+    </select>
+
+</mapper>

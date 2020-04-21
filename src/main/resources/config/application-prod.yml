@@ -1,0 +1,156 @@
+# ===================================================================
+# Spring Boot configuration for the "dev" profile.
+#
+# This configuration overrides the application.yml file.
+#
+# ===================================================================
+logging:
+  #日志
+  level:
+    ROOT: debug
+    com.ctsi.sampleapp: debug
+
+spring:
+  profiles:
+    active: dev
+    include: swagger
+  jackson:
+    serialization.indent_output: true
+    #时区
+    time-zone: GMT+8
+  jpa:
+    hibername:
+      ddl-auto: none
+
+  liquibase:
+    #数据库初始化
+    enabled: true
+    change-log: classpath:/db/changelog/master.xml
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    jdbc-url: jdbc:mysql://10.10.10.212:3306/common?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
+    type: com.zaxxer.hikari.HikariDataSource
+    username: dict
+    password: aad5b701cadf39bdb82a4419eb747ddb
+    hikari:
+      #最大连接池数
+      maximumPoolSize: 3
+      data-source-properties:
+      cachePrepStmts: true
+      prepStmtCacheSize: 250
+      prepStmtCacheSqlLimit: 2048
+      useServerPrepStmts: true
+  redis:
+    database: 0
+    host: 10.10.10.212
+    port: 6379
+    password:
+    timeout: 2000ms
+    jedis:
+      pool:
+        max-idle: 8
+        min-idle: 0
+        max-active: 8
+        max-wait: -1ms
+  #国际化
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8
+  resources:
+    static-locations: classpath:/,file:${web.download-path}
+server:
+  #端口号
+  port: 9000
+web:
+  download-path: /Users/tongliwei/
+  #/usr/local/dict/beijing/
+ctsi:
+  customerFilePath: /usr/local/nginx/html/upload/custom/
+  #/usr/local/nginx/html/upload/custom/
+  # CORS is only enabled by default with the "dev" profile, so BrowserSync can access the API
+  cors:
+    allowed-origins: "*"
+    allowed-methods: "*"
+    allowed-headers: "*"
+    exposed-headers: "Authorization,Link,X-Total-Count"
+    allow-credentials: true
+    max-age: 1800
+  #允许跨域，多个以逗号分隔
+  corspaths: "/api/**"
+  #新增用户默认密码
+  login-password: ctsi1234
+  #RSA-prikey: MIICeQIBADANBgkqhkiG9w0BAQEFAASCAmMwggJfAgEAAoGBAIrL6usRuuiBXWaLeEx6wReK7h//2Tfgr/5r0m8EWv1UmSbWRTJe2PRE58ch87bHDofWdqXHeSaq50JbHPLCrPyY7bx6Atxmz0N80ueu48imyTOUt/uh7momCz0FY9ghafteZJJwEDDlA2DDz5sZPIxz71aRH0MR8jrHqlmfVPajAgMBAAECgYEAhAcn5wYNmr/8HeCLxYx7gy6YB35znXCxWT4thYdKGnLP4J6wYhLRI8MsC0OjtnkxvEtov5e5CexGYduT9OT0cUjn8au3Ed6QVw3DzdWpmATCkAj64xyc136wbDsGGV5z2gLTjedS2zVITSFgq6OsyWe5Cxm+P0LLak4OqwryTLECQQDF7lulm25V2K68l7Wz7x7pd/sAFr6octQQ/zqSu/Aeb29UvseEHe6Z7Cb9tLVOk1a/oGykHLXqn3J1d07w01VZAkEAs4RAlUsJG0516TsHTNHws5pnIQifKFqbYJoNSG+nki2EuKhwNfQlTzg/ftWa+ZEx6GrPQVz4oaffLPZU5A6gWwJBAIDzdp/hMLQbNFRIHqg4rJH8ifmX1+UU0pa0QavhZ2HcxdKXbJLlkVKUqR53QfwMP+MemEkfL2HJOZ/P+A0sEhkCQQCMwIBGzjuIrn8i7IZvxBf/Kmv76Z+o60nydzc8+Vag9ZGfm2nH0/LA53BZiS/mx+IiwkRYkoXbch05SrcKzTELAkEAvgLsR5WyoCYM/K0T9SfDSFC92+4VeiMDyuCghka4jRNWUH7tLBYuEXHjvVBtwvOAbg7WTxM+4ayrLFMwRvGfvQ==
+  log:
+    #是否启用操作日志
+    operation-log:
+      enable: true
+    #是否启用登录日志
+    login-log:
+      enable: true
+  security:
+    authentication:
+      jwt:
+        #token key密钥
+        secret: my-secret-token-to-change-in-production
+        #token失效时间，秒
+        token-validity-in-seconds: 1800
+        #rememberme token失效时间
+        token-validity-in-seconds-for-remember-me: 2592000
+  captcha:
+    #验证码KEY策略
+    keyProvider: simpleCaptchaKeyProvider
+    #验证码组件缓存实现，提供两种实现，redis和基于guava的缓存，redis支持集群部署，guava只支持单机使用。可选值：guavaCaptchaCache，redisCaptchaCache
+    cache: guavaCaptchaCache
+  access:
+    #组织名
+    groupId: ${project.groupId}
+    #项目名
+    projectName: ${project.artifactId}
+    #项目版本
+    projectVersion: ${project.version}
+    #组件使用用户（比翼平台账号用户名）
+    userName: yuhaiyang
+    #是否启用组件统计，关闭则无法上报组件调用量，影响积分
+    enable: false
+    #统计信息发送地址
+    url: https://s.ctbiyi.com/api
+    #日志文件
+    filePath: /Users/tongliwei
+    #发送策略，毫秒
+    scheduledRate: 180000
+  datasource:
+    db:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://10.10.10.212:3306/ssp?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
+      type: com.zaxxer.hikari.HikariDataSource
+      username: dict
+      password: aad5b701cadf39bdb82a4419eb747ddb
+      hikari:
+        #最大连接池数
+        maximumPoolSize: 3
+        data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
+  resetPwdAddr: http://10.10.10.212/#/rePassword
+  serverAddress: http://10.10.10.212:9000/
+#mybatis配置
+mybatis:
+  configLocation: classpath:/mybatis-config.xml
+  mapper-locations: classpath:mapper/*.xml  #注意：一定要对应mapper映射xml文件的所在路径
+
+pagehelper:
+  #分页设置
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  pageSizeZero: true
+
+management:
+  health:
+    redis:
+      #关闭REDIS健康检查
+      enabled: false
+    elasticsearch:
+      enabled: false

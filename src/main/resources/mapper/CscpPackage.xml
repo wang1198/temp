@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ctsi.dao.CscpPackDao">
+    <resultMap id="packMap" type="com.ctsi.domain.CscpPackage">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="pack_name" property="packName" jdbcType="VARCHAR"/>
+        <result column="pack_desc" property="description" jdbcType="VARCHAR"/>
+        <result column="org_id" property="orgId" jdbcType="VARCHAR"/>
+        <result column="org_name" property="orgName" jdbcType="VARCHAR"/>
+        <result column="createTime" property="createTime" jdbcType="VARCHAR"/>
+        <collection property ="funcs" ofType="com.ctsi.domain.CscpFunc" >
+            <id property ="id" column="fid" />
+            <result property ="funcName" column="func_name" />
+            <result property ="funcType" column="func_type" />
+            <result property ="description" column="func_desc" />
+        </collection>
+    </resultMap>
+
+    <select id="getPackageList" resultMap="packMap" parameterType="com.ctsi.model.CscpPackDTO">
+        select DISTINCT p.id,pack_name,pack_desc,org_id,org_name,createTime,f.id fid,f.func_name,f.func_type,f.func_desc from cscp_package p left join cscp_pack_func pf on p.id=pf.package_id left join cscp_function f on pf.func_id=f.id
+        <where>
+            <if test="orgId != null and orgId != ''">
+                and p.org_id=#{orgID,jdbcType=VARCHAR}
+            </if>
+            <if test="orgName != null and orgName != ''">
+                and org_name = #{orgName,jdbcType=VARCHAR}
+            </if>
+            <if test="packName != null and packName != ''">
+                and pack_name like concat('%',#{packName,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="description != null and description != ''">
+                and pack_desc = #{description,jdbcType=VARCHAR}
+            </if>
+            <if test="begin!=null and begin!=''">
+                <![CDATA[
+                and createtime >= #{begin}
+                ]]>
+            </if>
+            <if test="end!=null and end!=''">
+                <![CDATA[
+                and createtime <= #{end}
+                ]]>
+            </if>
+        </where>
+        order by createTime desc
+    </select>
+    <update id="update" parameterType="com.ctsi.domain.CscpPackage">
+        update cscp_package
+        <set>
+            <if test="orgId != null and orgId != ''">
+                org_id=#{orgID,jdbcType=VARCHAR},
+            </if>
+            <if test="orgName != null and orgName != ''">
+                org_name = #{orgName,jdbcType=VARCHAR},
+            </if>
+            <if test="packName != null and packName != ''">
+                pack_name = #{packName,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                pack_desc = #{description,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <insert id="insert" parameterType="com.ctsi.domain.CscpPackage">
+        <selectKey resultType="String" keyProperty="id" order="BEFORE">
+            SELECT REPLACE(UUID(),'-','')
+        </selectKey>
+        insert into cscp_package(id,pack_name, pack_desc,org_id,org_name,createTime) values (#{id,jdbcType=VARCHAR},#{packName,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{orgId,jdbcType=VARCHAR},#{orgName,jdbcType=VARCHAR},sysdate())
+    </insert>
+    <insert id="insert_pack_func" parameterType="List">
+        insert into cscp_pack_func(package_id,func_id) values
+        <foreach collection="funcs" item="funcID" separator=",">
+        (#{id},#{funcID})
+        </foreach>
+    </insert>
+    <delete id="delete" parameterType="String">
+        delete from cscp_package where id=#{id,jdbcType=VARCHAR}
+    </delete>
+    <delete id="delete_pack_func" parameterType="String">
+        delete from cscp_pack_func where package_id=#{id,jdbcType=VARCHAR}
+    </delete>
+</mapper>

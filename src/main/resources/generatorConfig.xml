@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD Ctsi MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/ctsi-mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+  
+
+  <context id="ssp" targetRuntime="com.ctsi.biyi.generator.plugins.IntrospectedTableBiyiMyBatis3Impl"> 
+	
+	<property name="databaseDialect" value="mysql"/>
+	
+	<property name="dataAccess" value="mybatis"/>
+	
+	<property name="useES" value="false"/>
+	
+    <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin" />
+	
+    <plugin type="com.ctsi.biyi.generator.plugins.SerializableBiyiPlugin" />
+
+    <plugin type="com.ctsi.biyi.generator.plugins.MapperAnnotationBiyiPlugin" />
+
+    <plugin type="com.ctsi.biyi.generator.plugins.ExampleBiyiPlugin" />
+
+    <plugin type="com.ctsi.biyi.generator.plugins.ClassCommentPlugin" />
+    
+    <plugin type="com.ctsi.biyi.generator.plugins.ServicePlugin" > 
+        <property name="importPackage" value="com.ctsi"/>  
+        <property name="targetPackage" value="com.ctsi"/>  
+        <property name="targetProject" value="src/main/java"/>  
+        <property name="targetWebProject" value="..\sspweb"/>  
+    </plugin>
+    
+    <plugin type="com.ctsi.biyi.generator.plugins.UnitSelectPlugin" > 
+        <property name="importPackage" value="com.ctsi"/>  
+        <property name="targetPackage" value="com.ctsi"/>  
+        <property name="targetProject" value="src/main/java"/>  
+    </plugin>
+    
+    <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+        connectionURL="jdbc:mysql://10.10.10.212:3306/common?useUnicode=true&amp;characterEncoding=utf8&amp;useSSL=false"
+        userId="dict"
+        password="aad5b701cadf39bdb82a4419eb747ddb">
+    </jdbcConnection> 
+    
+    
+    <javaTypeResolver >
+      <property name="forceBigDecimals" value="false" />
+    </javaTypeResolver>
+
+    <javaModelGenerator targetPackage="com.ctsi.domain" targetProject="src/main/java">
+      <property name="enableSubPackages" value="true" />
+      <property name="trimStrings" value="true" />
+    </javaModelGenerator>
+
+    <sqlMapGenerator targetPackage="com.ctsi.xml"  targetProject="src/main/java">
+      <property name="enableSubPackages" value="true" />
+    </sqlMapGenerator>
+
+    <javaClientGenerator type="ANNOTATEDMAPPER" targetPackage="com.ctsi.repository"  targetProject="src/main/java">
+      <property name="enableSubPackages" value="true" />
+    </javaClientGenerator>
+
+    
+    
+    <table tableName="null">
+      <property name="useActualColumnNames" value="false"/>
+      <!--<generatedKey column="id" sqlStatement="mysql" identity="true" />-->
+    </table>
+  </context>
+</generatorConfiguration>

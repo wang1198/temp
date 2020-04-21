@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ctsi.dao.CscpBusinessDao">
+    <resultMap id="businessMap" type="com.ctsi.domain.CscpBusiness">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="business_name" property="businessName" jdbcType="VARCHAR"/>
+        <result column="business_type" property="businessType" jdbcType="INTEGER"/>
+        <result column="business_desc" property="description" jdbcType="VARCHAR"/>
+        <result column="createTime" property="createTime" jdbcType="VARCHAR"/>
+        <result column="org_id" property="orgId" jdbcType="VARCHAR"/>
+        <result column="org_name" property="orgName" jdbcType="VARCHAR"/>
+        <result column="business_no" property="businessNo" jdbcType="VARCHAR"/>
+        <result column="manager" property="manager" jdbcType="VARCHAR"/>
+        <result column="year" property="year" jdbcType="VARCHAR"/>
+        <result column="show" property="show" jdbcType="INTEGER"/>
+        <collection property ="url" ofType="String" javaType="List" select="getUrl" column="{id=id}">
+            <result column="url" />
+        </collection>
+    </resultMap>
+    <select id="getUrl" parameterType="map" resultType="String">
+     select url from cscp_business_url where businessId=#{id}
+    </select>
+    <select id="getBusinessList" resultMap="businessMap" parameterType="com.ctsi.model.CscpBusinessDTO">
+        select id,business_name,business_type,business_desc,business_no,manager,org_id,org_name,createTime,`year`,`show` from cscp_business
+        <where>
+            <if test="orgId != null and orgId != ''">
+                and org_id=#{orgId,jdbcType=VARCHAR}
+            </if>
+            <if test="businessName != null and businessName != ''">
+                and business_name like concat('%',#{businessName,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="businessType != null">
+                and business_type = #{businessType,jdbcType=INTEGER}
+            </if>
+            <if test="description != null and description != ''">
+                and business_desc = #{description,jdbcType=VARCHAR}
+            </if>
+            <if test="businessNo != null and businessNo != ''">
+                and business_no = #{businessNo,jdbcType=VARCHAR}
+            </if>
+            <if test="manager != null and manager != ''">
+                and manager = #{manager,jdbcType=VARCHAR}
+            </if>
+            <if test="begin!=null and begin!=''">
+                <![CDATA[
+                and createtime >= #{begin}
+                ]]>
+            </if>
+            <if test="end!=null and end!=''">
+                <![CDATA[
+                and createtime <= #{end}
+                ]]>
+            </if>
+        </where>
+        order by createtime desc
+    </select>
+    <update id="update" parameterType="com.ctsi.domain.CscpBusiness">
+        update cscp_business
+        <set>
+            <if test="businessName != null and businessName != ''">
+                business_name = #{businessName,jdbcType=VARCHAR},
+            </if>
+            <if test="orgId != null and orgId != ''">
+                org_id=#{orgId,jdbcType=VARCHAR},
+            </if>
+            <if test="orgName != null and orgName != ''">
+                org_name=#{orgName,jdbcType=VARCHAR},
+            </if>
+            <if test="businessType != null">
+                business_type = #{businessType,jdbcType=INTEGER},
+            </if>
+            <if test="description != null">
+                business_desc = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="businessNo != null">
+                business_no = #{businessNo,jdbcType=VARCHAR},
+            </if>
+            <if test="manager != null">
+                manager = #{manager,jdbcType=VARCHAR},
+            </if>
+            <if test="year != null">
+                `year` = #{year,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <insert id="insert" parameterType="com.ctsi.domain.CscpBusiness">
+        <selectKey resultType="String" keyProperty="id" order="BEFORE">
+            SELECT REPLACE(UUID(),'-','')
+        </selectKey>
+        insert into cscp_business(id,business_name, business_type,business_desc,org_id,org_name,createTime,business_no,manager,`year`) values (#{id,jdbcType=VARCHAR},#{businessName,jdbcType=VARCHAR}, #{businessType,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, #{orgId,jdbcType=VARCHAR},#{orgName,jdbcType=VARCHAR},CURDATE(),#{businessNo,jdbcType=VARCHAR},#{manager,jdbcType=VARCHAR},#{year,jdbcType=VARCHAR})
+    </insert>
+    <delete id="delete" parameterType="String">
+        delete from cscp_business where id in
+        <foreach item="id" collection="id" open="(" close=")" separator="," >
+            #{id,jdbcType=VARCHAR}
+        </foreach>
+    </delete>
+    <delete id="delete_urls" parameterType="String">
+        delete from cscp_business_url where businessId in
+        <foreach item="id" collection="id" open="(" close=")" separator="," >
+            #{id,jdbcType=VARCHAR}
+        </foreach>
+    </delete>
+    <delete id="delete_url" parameterType="String">
+        delete from cscp_business_url where businessId=#{id,jdbcType=VARCHAR}
+    </delete>
+    <insert id="saveUrl" parameterType="List">
+        insert into cscp_business_url(businessId,url) values
+        <foreach collection="urls" item="url" separator=",">
+            (#{businessId},#{url})
+        </foreach>
+    </insert>
+</mapper>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ctsi.dao.DicMapper">
+    <resultMap id="modelMap" type="com.ctsi.domain.Model">
+        <result column="value" property="value" jdbcType="VARCHAR"/>
+        <result column="label" property="label" jdbcType="VARCHAR"/>
+    </resultMap>
+    <select id="getDicByType" resultType="map" parameterType="String">
+        select para_code as value,para_name as label from t_parameter_info where para_type=#{paraType,jdbcType=VARCHAR}
+    </select>
+    <select id="getDicNameByType" parameterType="string" resultType="string">
+        SELECT para_name from t_parameter_info where para_type=#{paraType,jdbcType=VARCHAR} AND para_code=#{paraCode,jdbcType=VARCHAR}
+    </select>
+
+    <select id="queryLocation" parameterType="string" resultMap="modelMap">
+        select id as value ,name as label from province_city_district where pid=#{pid,jdbcType=VARCHAR}
+    </select>
+    <select id="queryCompany" resultMap="modelMap">
+        SELECT company_id as value,company_full_name as label FROM t_task_company
+    </select>
+    <select id="queryCompanyById" resultType="string" parameterType="string">
+        select company_full_name FROM t_task_company where company_id=#{id,jdbcType=VARCHAR}
+    </select>
+    <select id="queryLocationById" resultType="string" parameterType="string">
+        select name from province_city_district where id=#{id,jdbcType=VARCHAR}
+    </select>
+
+
+</mapper>

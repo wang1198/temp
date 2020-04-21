@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ctsi.dao.ReportMapper">
+    <resultMap id="reportMap" type="com.ctsi.domain.Report">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="fileName" property="fileName" jdbcType="VARCHAR"/>
+        <result column="reportType" property="reportType" jdbcType="INTEGER"/>
+        <result column="createTime" property="createTime" jdbcType="DATE"/>
+        <result column="createBy" property="createBy" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,fileName,reportType,createTime,createBy
+    </sql>
+
+    <select id="queryFileNameById" parameterType="string" resultType="string">
+        select fileName from t_report where id=#{id,jdbcType=INTEGER}
+    </select>
+    <select id="queryReportByType" parameterType="int" resultMap="reportMap">
+        select <include refid="Base_Column_List"/> from t_report
+        where reportType=#{reportType,jdbcType=INTEGER}
+    </select>
+
+    <select id="queryLastestReportByType" parameterType="int" resultType="com.ctsi.domain.Report">
+       select <include refid="Base_Column_List"/> from t_report
+       where createTime=(SELECT max(createTime) from t_report where reportType=#{reportType,jdbcType=INTEGER})
+       and reportType=#{reportType,jdbcType=INTEGER} limit 1
+    </select>
+
+    <insert id="addReport" parameterType="com.ctsi.domain.Report">
+        insert into t_report (<include refid="Base_Column_List"/>)
+        values(#{id,jdbcType=VARCHAR},#{fileName,jdbcType=VARCHAR},#{reportType,jdbcType=INTEGER},
+            #{createTime,jdbcType=DATE},#{createBy,jdbcType=VARCHAR})
+    </insert>
+<!--    <update id="updateReport" parameterType="com.ctsi.hw.pojo.Report">-->
+<!--        update t_report set fileName=#{fileName,jdbcType=VARCHAR},updateTime=#{updateTime,jdbcType=DATE}-->
+<!--        where reportType=#{reportType,jdbcType=INTEGER},createBy=#{createBy,jdbcType=VARCHAR}-->
+<!--    </update>-->
+</mapper>

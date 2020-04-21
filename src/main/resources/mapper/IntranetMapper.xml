@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ctsi.dao.IntranetMapper">
+    <resultMap id="intranetMap" type="com.ctsi.domain.Intranet">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="ip" property="ip" jdbcType="VARCHAR"/>
+        <result column="mac_address" property="macAddress" jdbcType="VARCHAR"/>
+        <result column="office_zone" property="officeZone" jdbcType="VARCHAR"/>
+        <result column="equipment_person" property="equipmentPerson" jdbcType="VARCHAR"/>
+        <result column="prohibit_reason" property="prohibitReason" jdbcType="VARCHAR"/>
+        <result column="equipment_department" property="equipmentDepartment" jdbcType="VARCHAR"/>
+        <result column="leak_name" property="leakName" jdbcType="VARCHAR"/>
+        <result column="handle_person" property="handlePerson" jdbcType="VARCHAR"/>
+        <result column="prohibit_time" property="prohibitTime" jdbcType="VARCHAR"/>
+        <result column="unseal_time" property="unsealTime" jdbcType="VARCHAR"/>
+        <result column="comment" property="comment" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,ip,mac_address,office_zone,prohibit_reason,equipment_department,equipment_person,leak_name,handle_person,
+        prohibit_time,unseal_time,comment
+    </sql>
+
+    <select id="searchIntranetByCondition" resultMap="intranetMap">
+        select <include refid="Base_Column_List"/> from t_intranet
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="ip !=null and ip != ''">
+                and ip like CONCAT ('%',#{ip,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="macAddress != null and macAddress != ''">
+                and mac_address like CONCAT ('%',#{macAddress,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="officeZone != null and officeZone != ''">
+                and office_zone like CONCAT ('%',#{officeZone,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="prohibitReason != null and prohibitReason != ''">
+                and prohibit_reason = #{prohibitReason,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+    <select id="searchIntranetById" resultMap="intranetMap">
+        select <include refid="Base_Column_List"/> from t_intranet
+        where id=#{id}
+    </select>
+
+    <select id="searchAllIntranet" resultMap="intranetMap">
+        select <include refid="Base_Column_List"/> from t_intranet
+    </select>
+
+    <insert id="addIntranet" parameterType="com.ctsi.domain.Intranet">
+        insert into t_intranet (<include refid="Base_Column_List"/>)
+        values(#{id,jdbcType=VARCHAR},#{ip,jdbcType=VARCHAR},#{macAddress,jdbcType=VARCHAR},#{officeZone,jdbcType=VARCHAR},#{prohibitReason,jdbcType=VARCHAR},
+        #{equipmentDepartment,jdbcType=VARCHAR},#{equipmentPerson,jdbcType=VARCHAR},#{leakName,jdbcType=VARCHAR},#{handlePerson,jdbcType=VARCHAR},DATE_FORMAT(#{prohibitTime,jdbcType=VARCHAR}, '%Y-%m-%d'),DATE_FORMAT(#{unsealTime,jdbcType=VARCHAR}, '%Y-%m-%d'),
+        #{comment,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateIntranet" parameterType="com.ctsi.domain.Intranet">
+        <if test="id != null and id != ''">
+            update t_intranet
+            <set>
+                <if test="ip != null and ip != ''">
+                    ip = #{ip,jdbcType=VARCHAR},
+                </if>
+                <if test="macAddress != null and macAddress != ''">
+                    mac_address = #{macAddress,jdbcType=VARCHAR},
+                </if>
+                <if test="officeZone != null and officeZone != ''">
+                    office_zone = #{officeZone,jdbcType=VARCHAR},
+                </if>
+                <if test="prohibitReason != null and prohibitReason != ''">
+                    prohibit_reason = #{prohibitReason,jdbcType=VARCHAR},
+                </if>
+                <if test="prohibitTime != null">
+                    prohibit_time =DATE_FORMAT(#{prohibitTime,jdbcType=VARCHAR}, '%Y-%m-%d'),
+                </if>
+                <if test="unsealTime != null">
+                    unseal_time = DATE_FORMAT(#{unsealTime,jdbcType=VARCHAR}, '%Y-%m-%d'),
+                </if>
+                <if test="equipmentDepartment != null and equipmentDepartment != ''">
+                    equipment_department = #{equipmentDepartment,jdbcType=VARCHAR},
+                </if>
+                <if test="leakName != null and leakName != ''">
+                    leak_name = #{leakName,jdbcType=VARCHAR},
+                </if>
+                <if test="comment != null and comment != ''">
+                    comment = #{comment,jdbcType=VARCHAR}
+                </if>
+            </set>
+            where id=#{id,jdbcType=VARCHAR};
+        </if>
+    </update>
+
+    <delete id="deleteIntranet" parameterType="String">
+        delete from t_intranet where id=#{id,jdbcType=VARCHAR};
+    </delete>
+
+    <select id="queryNumByIP" resultType="int" parameterType="String">
+        select count(ip) from t_intranet where ip=#{ip,jdbcType=VARCHAR};
+    </select>
+</mapper>

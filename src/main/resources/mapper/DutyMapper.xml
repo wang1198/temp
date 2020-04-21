@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ctsi.dao.DutyMapper">
+    <resultMap id="dutyMap" type="com.ctsi.domain.Duty">
+        <result column="ip" property="ip" jdbcType="VARCHAR"/>
+        <result column="team_leader" property="teamLeader" jdbcType="VARCHAR"/>
+        <result column="network_group" property="networkGroup" jdbcType="VARCHAR"/>
+        <result column="security_group" property="securityGroup" jdbcType="VARCHAR"/>
+        <result column="analysis_group" property="analysisGroup" jdbcType="VARCHAR"/>
+        <result column="customer_service_group" property="customerServiceGroup" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        ip,team_leader,network_group,security_group,analysis_group,customer_service_group
+    </sql>
+    <select id="searchDuty" resultMap="dutyMap">
+        select <include refid="Base_Column_List"/> from t_duty
+    </select>
+
+    <insert id="addDuty" parameterType="List">
+        insert into t_duty (<include refid="Base_Column_List"/>) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.ip,jdbcType=VARCHAR},#{item.teamLeader,jdbcType=VARCHAR},#{item.networkGroup,jdbcType=VARCHAR},
+            #{item.securityGroup,jdbcType=VARCHAR},#{item.analysisGroup,jdbcType=VARCHAR},#{item.customerServiceGroup,jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+</mapper>
