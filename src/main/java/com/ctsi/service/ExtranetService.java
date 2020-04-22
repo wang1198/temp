@@ -2,6 +2,7 @@ package com.ctsi.service;
 
 import com.ctsi.common.ResultBack;
 import com.ctsi.domain.Extranet;
+import com.ctsi.ssdc.admin.domain.util.Result;
 import org.apache.ibatis.annotations.Param;
 
 import javax.servlet.http.HttpServletResponse;
@@ -18,5 +19,4 @@ public interface ExtranetService {
 
     public ResultBack exportExtranet(HttpServletResponse response);
 
-    public ResultBack queryCompany(String companyId);
 }

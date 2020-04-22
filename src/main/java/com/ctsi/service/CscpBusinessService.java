@@ -18,5 +18,5 @@ public interface CscpBusinessService {
     void insert(CscpBusiness business);
     void update(CscpBusiness business);
     void delete(List<String> id);
-    List<String> importBusiness(List<CscpBusiness> list,String orgId,String orgName);
+    void importBusiness(List<CscpBusiness> list,String orgId,String orgName);
 }

@@ -2,8 +2,6 @@ package com.ctsi.domain;
 
 import com.ctsi.ssdc.admin.domain.util.ExcelColumn;
 
-import java.util.List;
-
 /**
  * ClassName CscpBusiness
  * Description //TODO
@@ -29,10 +27,6 @@ public class CscpBusiness {
     private String year;
     @ExcelColumn(value = "系统类型", col = 2)
     private String typeDesc;
-    private List<String> url;
-    private Integer show;
-    @ExcelColumn(value = "URL", col = 7)
-    private String urlDesc;
 
     public String getId() {
         return id;
@@ -120,29 +114,5 @@ public class CscpBusiness {
 
     public void setTypeDesc(String typeDesc) {
         this.typeDesc = typeDesc;
-    }
-
-    public List<String> getUrl() {
-        return url;
-    }
-
-    public void setUrl(List<String> url) {
-        this.url = url;
-    }
-
-    public Integer getShow() {
-        return show;
-    }
-
-    public void setShow(Integer show) {
-        this.show = show;
-    }
-
-    public String getUrlDesc() {
-        return urlDesc;
-    }
-
-    public void setUrlDesc(String urlDesc) {
-        this.urlDesc = urlDesc;
     }
 }

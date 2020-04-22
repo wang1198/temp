@@ -9,19 +9,19 @@ import javax.servlet.http.HttpServletRequest;
 
 public interface ReportService {
 
-    public ResultBack importReportingProcess(HttpServletRequest request,MultipartFile file);
+    public ResultBack importReportingProcess(String userName,MultipartFile file);
 
     public ResponseEntity<FileSystemResource> exportReportingProcess();
 
-    public ResultBack importReceivingProcess(HttpServletRequest request,MultipartFile file);
+    public ResultBack importReceivingProcess(String userName,MultipartFile file);
 
     public ResponseEntity<FileSystemResource> exportReceivingProcess();
 
-    public ResultBack importJudgementProcess(HttpServletRequest request,MultipartFile file);
+    public ResultBack importJudgementProcess(String userName,MultipartFile file);
 
     public ResponseEntity<FileSystemResource> exportJudgementProcess();
 
-    public ResultBack importDisposalProcess(HttpServletRequest request,MultipartFile file);
+    public ResultBack importDisposalProcess(String userName,MultipartFile file);
 
     public ResponseEntity<FileSystemResource> exportDisposalProcess();
 
@@ -42,5 +42,7 @@ public interface ReportService {
     public ResultBack judgementProcessRecord(int page, int limit);
 
     public ResultBack disposalProcessRecord(int page, int limit);
+
+
 
 }

@@ -20,7 +20,7 @@ public class ExtranetController {
 
     @Autowired
     private ExtranetService extranetService;
-
+    
     @Autowired
     private CustomerService customerService;
 
@@ -52,9 +52,9 @@ public class ExtranetController {
     public ResultBack exportExtranet(HttpServletResponse response) {
         return extranetService.exportExtranet(response);
     }
-
+    
     public Result getProvince(){
         List<ProvinceCityDistrict> provinceList = customerService.getProvince();
-        return null;
+       return null;
     }
 }

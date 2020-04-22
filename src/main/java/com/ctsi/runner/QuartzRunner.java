@@ -2,7 +2,6 @@ package com.ctsi.runner;
 
 import com.ctsi.quartz.MonitorJob;
 import com.ctsi.quartz.QuartzManager;
-import com.ctsi.quartz.ReportJob;
 import org.quartz.Scheduler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,8 +27,7 @@ public class QuartzRunner implements ApplicationRunner {
     public void run(ApplicationArguments args) {
         QuartzManager manager = new QuartzManager(scheduler);
         String cronMonitor = "0 0/5 * * * ?";//"0 0 23 * * ?";
-        String cronReport="0 0 23 * * ?";
-        manager.addJob("monitor", MonitorJob.class,cronMonitor);
-        manager.addJob("report", ReportJob.class,cronReport);
+        String cronReport="0 0/3 * * * ?";
+        //manager.addJob("monitor", MonitorJob.class,cronMonitor);
     }
 }

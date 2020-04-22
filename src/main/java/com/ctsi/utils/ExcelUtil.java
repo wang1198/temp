@@ -5,7 +5,6 @@ import cn.afterturn.easypoi.excel.ExcelImportUtil;
 import cn.afterturn.easypoi.excel.entity.ExportParams;
 import cn.afterturn.easypoi.excel.entity.ImportParams;
 import cn.afterturn.easypoi.excel.entity.enmus.ExcelType;
-import com.ctsi.ssdc.admin.domain.util.ExcelColumn;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.CharUtils;
@@ -33,19 +32,12 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-/**
- * ClassName ExcelUtil
- * Description //TODO
- * Author tongliwei
- * Date 2019/5/24 15:43
- * Version v1.0
- **/
 public class ExcelUtil {
+
     private final static Logger log = LoggerFactory.getLogger(ExcelUtil.class);
     private static Workbook wb = null;
     private final static String EXCEL2003 = "xls";
     private final static String EXCEL2007 = "xlsx";
-
     /**
      * 导出数据到Excel
      *

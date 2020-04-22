@@ -24,6 +24,7 @@ public class Extranet {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date discoveryTime;
     private String attackedSystem;
+    private String attackSystemDesc;
 
     private String resportCompany;
     @Excel(name = "信息来源", orderNum = "10")
@@ -69,6 +70,24 @@ public class Extranet {
     @Excel(name = "处置措施", orderNum = "9")
     private String disposalMeasures;
     private String comment;
+
+    private String typeId;
+
+    public String getAttackSystemDesc() {
+        return attackSystemDesc;
+    }
+
+    public void setAttackSystemDesc(String attackSystemDesc) {
+        this.attackSystemDesc = attackSystemDesc;
+    }
+
+    public String getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(String typeId) {
+        this.typeId = typeId;
+    }
 
 
     public String getDetailLocation() {

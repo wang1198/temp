@@ -4,6 +4,7 @@ import com.ctsi.common.ResultBack;
 import com.ctsi.dao.DicMapper;
 import com.ctsi.dao.ExtranetMapper;
 import com.ctsi.domain.Extranet;
+import com.ctsi.domain.Model;
 import com.ctsi.service.ExtranetService;
 import com.ctsi.utils.ExcelUtil;
 import com.github.pagehelper.PageHelper;
@@ -37,11 +38,12 @@ public class ExtranetServiceImpl implements ExtranetService {
                 ex.setRiskLevelDesc(dicMapper.getDicNameByType("FXJB",ex.getRiskLevel()));
                 ex.setAttackTypeDesc(dicMapper.getDicNameByType("GJLX",ex.getAttackType()));
                 ex.setIsHandleDesc(dicMapper.getDicNameByType("SFCZ",ex.getIsHandle()));
-                ex.setResportCompanyDesc(extranetMapper.queryCompany(ex.getResportCompany()));
+                ex.setResportCompanyDesc(dicMapper.queryCompanyById(ex.getResportCompany()));
                 ex.setIpPort(ex.getFromIP() + ":" + ex.getFromPort());
                 ex.setFromIPLocationDesc(dicMapper.queryLocationById(ex.getFromIPLocation()));
                 ex.setFromIPCityDesc(dicMapper.queryLocationById(ex.getFromIPCity()));
                 ex.setDetailLocation(ex.getFromIPLocationDesc() + ex.getFromIPCityDesc());
+                ex.setAttackSystemDesc(ex.getAttackedSystem());
             }
             pageInfo = new PageInfo<>(extranetList);
         }catch (Exception e){
@@ -107,9 +109,4 @@ public class ExtranetServiceImpl implements ExtranetService {
         return ResultBack.ok();
     }
 
-    @Override
-    public ResultBack queryCompany(String companyId) {
-        String companyDesc = extranetMapper.queryCompany(companyId);
-        return ResultBack.ok(companyDesc);
-    }
 }

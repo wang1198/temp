@@ -12,6 +12,5 @@ public interface ReportMapper {
     List<Report> queryReportByType(@Param("reportType") Integer reportType);
     Report queryLastestReportByType(@Param("reportType") Integer reportType);
     void addReport(Report report);
-    void updateReport(Report report);
 
 }

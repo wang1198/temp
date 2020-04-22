@@ -26,6 +26,9 @@
     <select id="queryLocationById" resultType="string" parameterType="string">
         select name from province_city_district where id=#{id,jdbcType=VARCHAR}
     </select>
+    <select id="querySystemIdByProjectId" resultType="string" parameterType="string">
+        select system_id from t_pro_system where projects_id=#{projectId,jdbcType=VARCHAR}
+    </select>
 
 
 </mapper>

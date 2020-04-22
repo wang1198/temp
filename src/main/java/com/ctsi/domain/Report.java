@@ -13,6 +13,16 @@ public class Report {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date createTime;
 
+    private String typeId;
+
+    public String getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(String typeId) {
+        this.typeId = typeId;
+    }
+
 
     private String createBy;
 

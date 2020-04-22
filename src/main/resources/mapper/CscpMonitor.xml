@@ -22,7 +22,7 @@
                 and port=#{port,jdbcType=INTEGER}
             </if>
             <if test="serviceName != null and serviceName != ''">
-                and serviceName like concat('%',#{serviceName,jdbcType=VARCHAR},'%')
+                and serviceName = #{serviceName,jdbcType=VARCHAR}
             </if>
             <if test="status != null">
                 and status = #{status,jdbcType=VARCHAR}

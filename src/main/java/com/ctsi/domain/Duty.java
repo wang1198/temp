@@ -24,7 +24,15 @@ public class Duty {
     @Excel(name = "钉钉群回复（客服）", orderNum = "5")
     private String customerServiceGroup;
 
+    private String typeId;
 
+    public String getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(String typeId) {
+        this.typeId = typeId;
+    }
 
     public String getIp() {
         return ip;

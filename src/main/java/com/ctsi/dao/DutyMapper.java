@@ -11,4 +11,6 @@ public interface DutyMapper {
     List<Duty> searchDuty();
 
     void addDuty(List<Duty> DutyList);
+
+    void deleteAllDuty();
 }

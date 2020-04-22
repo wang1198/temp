@@ -7,15 +7,15 @@ import javax.servlet.http.HttpServletResponse;
 
 public interface IntranetService {
 
-    ResultBack searchIntranetByCondition(Intranet intranet, int page, int limit);
+    public ResultBack searchIntranetByCondition(Intranet intranet, int page, int limit);
 
-    ResultBack addIntranet(Intranet intranet);
+    public ResultBack addIntranet(Intranet intranet);
 
-    ResultBack updateIntranet(Intranet intranet);
+    public ResultBack updateIntranet(Intranet intranet);
 
-    ResultBack deleteIntranet(String id);
+    public ResultBack deleteIntranet(String id);
 
-    ResultBack searchIntranetById(String id);
+    public ResultBack searchIntranetById(String id);
 
-    ResultBack exportExtranet(HttpServletResponse response);
+    public ResultBack exportExtranet(HttpServletResponse response);
 }

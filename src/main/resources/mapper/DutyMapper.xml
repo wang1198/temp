@@ -10,10 +10,12 @@
         <result column="security_group" property="securityGroup" jdbcType="VARCHAR"/>
         <result column="analysis_group" property="analysisGroup" jdbcType="VARCHAR"/>
         <result column="customer_service_group" property="customerServiceGroup" jdbcType="VARCHAR"/>
+        <result column="type_id" property="typeId" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
         ip,team_leader,network_group,security_group,analysis_group,customer_service_group
     </sql>
+
     <select id="searchDuty" resultMap="dutyMap">
         select <include refid="Base_Column_List"/> from t_duty
     </select>
@@ -26,4 +28,7 @@
             )
         </foreach>
     </insert>
+    <delete id="deleteAllDuty">
+        delete from t_duty
+    </delete>
 </mapper>

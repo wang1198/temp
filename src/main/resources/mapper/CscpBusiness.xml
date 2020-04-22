@@ -12,22 +12,15 @@
         <result column="business_no" property="businessNo" jdbcType="VARCHAR"/>
         <result column="manager" property="manager" jdbcType="VARCHAR"/>
         <result column="year" property="year" jdbcType="VARCHAR"/>
-        <result column="show" property="show" jdbcType="INTEGER"/>
-        <collection property ="url" ofType="String" javaType="List" select="getUrl" column="{id=id}">
-            <result column="url" />
-        </collection>
     </resultMap>
-    <select id="getUrl" parameterType="map" resultType="String">
-     select url from cscp_business_url where businessId=#{id}
-    </select>
     <select id="getBusinessList" resultMap="businessMap" parameterType="com.ctsi.model.CscpBusinessDTO">
-        select id,business_name,business_type,business_desc,business_no,manager,org_id,org_name,createTime,`year`,`show` from cscp_business
+        select id,business_name,business_type,business_desc,business_no,manager,org_id,org_name,createTime,`year` from cscp_business
         <where>
             <if test="orgId != null and orgId != ''">
                 and org_id=#{orgId,jdbcType=VARCHAR}
             </if>
             <if test="businessName != null and businessName != ''">
-                and business_name like concat('%',#{businessName,jdbcType=VARCHAR},'%')
+                and business_name = #{businessName,jdbcType=VARCHAR}
             </if>
             <if test="businessType != null">
                 and business_type = #{businessType,jdbcType=INTEGER}
@@ -69,16 +62,16 @@
             <if test="businessType != null">
                 business_type = #{businessType,jdbcType=INTEGER},
             </if>
-            <if test="description != null">
+            <if test="description != null and description != ''">
                 business_desc = #{description,jdbcType=VARCHAR},
             </if>
-            <if test="businessNo != null">
+            <if test="businessNo != null and businessNo != ''">
                 business_no = #{businessNo,jdbcType=VARCHAR},
             </if>
-            <if test="manager != null">
+            <if test="manager != null and manager != ''">
                 manager = #{manager,jdbcType=VARCHAR},
             </if>
-            <if test="year != null">
+            <if test="year != null and year != ''">
                 `year` = #{year,jdbcType=VARCHAR},
             </if>
         </set>
@@ -96,19 +89,4 @@
             #{id,jdbcType=VARCHAR}
         </foreach>
     </delete>
-    <delete id="delete_urls" parameterType="String">
-        delete from cscp_business_url where businessId in
-        <foreach item="id" collection="id" open="(" close=")" separator="," >
-            #{id,jdbcType=VARCHAR}
-        </foreach>
-    </delete>
-    <delete id="delete_url" parameterType="String">
-        delete from cscp_business_url where businessId=#{id,jdbcType=VARCHAR}
-    </delete>
-    <insert id="saveUrl" parameterType="List">
-        insert into cscp_business_url(businessId,url) values
-        <foreach collection="urls" item="url" separator=",">
-            (#{businessId},#{url})
-        </foreach>
-    </insert>
 </mapper>

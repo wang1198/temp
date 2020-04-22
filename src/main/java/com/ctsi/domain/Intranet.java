@@ -43,6 +43,16 @@ public class Intranet {
     private String unsealTime;
     private String comment;
 
+    private String typeId;
+
+    public String getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(String typeId) {
+        this.typeId = typeId;
+    }
+
     public String getProhibitReason() {
         return prohibitReason;
     }

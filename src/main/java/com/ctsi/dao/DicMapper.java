@@ -17,4 +17,5 @@ public interface DicMapper {
 
     String queryCompanyById(@Param("id") String id);
     String queryLocationById(@Param("id") String id);
+    String querySystemIdByProjectId(@Param("projectId") String projectId);
 }

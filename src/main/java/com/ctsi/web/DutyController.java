@@ -1,7 +1,7 @@
 package com.ctsi.web;
 
-import com.ctsi.common.ResultBack;
 import com.ctsi.service.DutyService;
+import com.ctsi.utils.ResultBack;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,7 +29,7 @@ public class DutyController {
     }
 
     @GetMapping("/searchDuty")
-    public ResultBack searchDuty(int page,int limit){
-        return dutyService.searchDuty(page, limit);
+    public ResultBack searchDuty(){
+        return dutyService.searchDuty();
     }
 }

@@ -106,13 +106,6 @@
             <artifactId>itext-asian</artifactId>
             <version>5.2.0</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.jfree/jfreechart -->
-        <dependency>
-            <groupId>org.jfree</groupId>
-            <artifactId>jfreechart</artifactId>
-            <version>1.0.19</version>
-        </dependency>
-
         <dependency>
             <groupId>cn.afterturn</groupId>
             <artifactId>easypoi-base</artifactId>
@@ -128,10 +121,16 @@
             <artifactId>easypoi-annotation</artifactId>
             <version>3.0.1</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.jfree/jfreechart -->
+        <dependency>
+            <groupId>org.jfree</groupId>
+            <artifactId>jfreechart</artifactId>
+            <version>1.0.19</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>5.1.8.RELEASE</version>
+            <version>5.1.9.RELEASE</version>
         </dependency>
     </dependencies>
         <profiles>

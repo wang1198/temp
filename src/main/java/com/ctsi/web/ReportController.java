@@ -22,8 +22,8 @@ public class ReportController {
     private ReportMapper reportMapper;
 
     @PostMapping("/importReportingProcess")
-    public ResultBack importReportingProcess(HttpServletRequest request,@RequestParam("file") MultipartFile file) {
-        return reportService.importReportingProcess(request,file);
+    public ResultBack importReportingProcess(@RequestParam("userName") String userName,@RequestParam("file") MultipartFile file) {
+        return reportService.importReportingProcess(userName,file);
     }
 
     @GetMapping("/exportReportingProcess")
@@ -32,8 +32,8 @@ public class ReportController {
     }
 
     @PostMapping("/importReceivingProcess")
-    public ResultBack importReceivingProcess(HttpServletRequest request,MultipartFile file){
-        return reportService.importReceivingProcess(request,file);
+    public ResultBack importReceivingProcess(@RequestParam("userName") String userName,MultipartFile file){
+        return reportService.importReceivingProcess(userName,file);
     }
 
     @GetMapping("/exportReceivingProcess")
@@ -42,8 +42,8 @@ public class ReportController {
     }
 
     @PostMapping("/importJudgementProcess")
-    public ResultBack importJudgementProcess(HttpServletRequest request,MultipartFile file){
-        return reportService.importJudgementProcess(request,file);
+    public ResultBack importJudgementProcess(@RequestParam("userName") String userName,MultipartFile file){
+        return reportService.importJudgementProcess(userName,file);
     }
 
     @GetMapping("/exportJudgementProcess")
@@ -52,8 +52,8 @@ public class ReportController {
     }
 
     @PostMapping("/importDisposalProcess")
-    public ResultBack importDisposalProcess(HttpServletRequest request,MultipartFile file){
-        return reportService.importDisposalProcess(request,file);
+    public ResultBack importDisposalProcess(@RequestParam("userName") String userName,MultipartFile file){
+        return reportService.importDisposalProcess(userName,file);
     }
 
     @GetMapping("/exportDisposalProcess")

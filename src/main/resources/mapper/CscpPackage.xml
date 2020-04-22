@@ -26,7 +26,7 @@
                 and org_name = #{orgName,jdbcType=VARCHAR}
             </if>
             <if test="packName != null and packName != ''">
-                and pack_name like concat('%',#{packName,jdbcType=VARCHAR},'%')
+                and pack_name = #{packName,jdbcType=VARCHAR}
             </if>
             <if test="description != null and description != ''">
                 and pack_desc = #{description,jdbcType=VARCHAR}
@@ -56,7 +56,7 @@
             <if test="packName != null and packName != ''">
                 pack_name = #{packName,jdbcType=VARCHAR},
             </if>
-            <if test="description != null">
+            <if test="description != null and description != ''">
                 pack_desc = #{description,jdbcType=VARCHAR},
             </if>
         </set>

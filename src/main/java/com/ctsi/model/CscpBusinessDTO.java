@@ -3,8 +3,6 @@ package com.ctsi.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.List;
-
 /**
  * ClassName CscpBusinessDTO
  * Description //TODO
@@ -29,8 +27,6 @@ public class CscpBusinessDTO {
     private String manager;
     private String businessNo;
     private String year;
-    private Integer show;
-    private List<String> url;
 
     public String getId() {
         return id;
@@ -134,21 +130,5 @@ public class CscpBusinessDTO {
 
     public void setYear(String year) {
         this.year = year;
-    }
-
-    public Integer getShow() {
-        return show;
-    }
-
-    public void setShow(Integer show) {
-        this.show = show;
-    }
-
-    public List<String> getUrl() {
-        return url;
-    }
-
-    public void setUrl(List<String> url) {
-        this.url = url;
     }
 }

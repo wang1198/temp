@@ -43,8 +43,7 @@ public class MenuResponseBodyAdvice implements ResponseBodyAdvice {
                                   MediaType mediaType, Class clz, ServerHttpRequest serverHttpRequest,
                                   ServerHttpResponse serverHttpResponse) {
         String uid = SecurityUtils.getCurrentUserId();
-        String[] orgs=userDetailService.findByUserId(uid).getOrgIds().split(",");
-        String orgID=orgs[0];
+        String orgID=userDetailService.findByUserId(uid).getOrgId();
         List<String> list=funcService.getFuncMenus(orgID);
         byte[] info = null;
         String publicKey = confDao.getConfig("publicKey");
@@ -53,9 +52,11 @@ public class MenuResponseBodyAdvice implements ResponseBodyAdvice {
         List<CscpMenusDTO> result=new ArrayList<>();
         if(license==null) {
             Optional<CscpMenusDTO> menu=menus.stream().filter(m->m.getName().equals("configure")).findFirst();
-            menu.ifPresent(result::add);
+            if (menu.isPresent())
+                result.add(menu.get());
             Optional<CscpMenusDTO> subMenu=menus.stream().filter(m->m.getName().equals("license")).findFirst();
-            subMenu.ifPresent(result::add);
+            if (subMenu.isPresent())
+                result.add(subMenu.get());
         }else {
             try {
                 byte[] bytes = Base64Util.decode(license);

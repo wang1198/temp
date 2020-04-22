@@ -3,12 +3,10 @@ package com.ctsi.model;
 import com.ctsi.domain.CscpBusiness;
 import com.ctsi.ssdc.admin.domain.CscpDic;
 import com.ctsi.ssdc.admin.repository.CscpDicDao;
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -39,8 +37,6 @@ public class CscpBusinessMapperImpl implements CscpBusinessMapper {
         cscpBusiness.setBusinessNo(dto.getBusinessNo());
         cscpBusiness.setManager(dto.getManager());
         cscpBusiness.setYear(dto.getYear());
-        cscpBusiness.setShow(dto.getShow());
-        cscpBusiness.setUrl(dto.getUrl());
         if(dto.getBusinessType()!=null)
             cscpBusiness.setBusinessType(dto.getBusinessType());
         return cscpBusiness;
@@ -62,12 +58,11 @@ public class CscpBusinessMapperImpl implements CscpBusinessMapper {
         cscpBusiness.setBusinessNo(entity.getBusinessNo());
         cscpBusiness.setManager(entity.getManager());
         cscpBusiness.setYear(entity.getYear());
-        cscpBusiness.setShow(entity.getShow());
-        cscpBusiness.setUrl(entity.getUrl());
         List<CscpDic> dics=dicDao.getDicListByType(1);
-        if(CollectionUtils.isNotEmpty(dics)){
-            Optional<CscpDic> dic=dics.stream().filter(o-> o.getDicValue().equals(entity.getBusinessType())).findFirst();
-            dic.ifPresent(cscpDic -> cscpBusiness.setBusinessTypeName(cscpDic.getDicDisplay()));
+        if(dics!=null&&dics.size()>0){
+            Optional<CscpDic> dic=dics.stream().filter(o->o.getDicValue()==Integer.valueOf(entity.getBusinessType())).findFirst();
+            if(dic.isPresent())
+                cscpBusiness.setBusinessTypeName(dic.get().getDicDisplay());
         }
         return cscpBusiness;
     }
@@ -75,7 +70,7 @@ public class CscpBusinessMapperImpl implements CscpBusinessMapper {
     @Override
     public List<CscpBusiness> toEntity(List<CscpBusinessDTO> dtoList) {
         if (dtoList == null) {
-            return Collections.emptyList();
+            return null;
         }
 
         return dtoList.stream()
@@ -86,7 +81,7 @@ public class CscpBusinessMapperImpl implements CscpBusinessMapper {
     @Override
     public List<CscpBusinessDTO> toDto(List<CscpBusiness> entityList) {
         if (entityList == null) {
-            return Collections.emptyList();
+            return null;
         }
 
         return entityList.stream()

@@ -22,5 +22,4 @@ public interface ExtranetMapper {
     int queryNumByConditon(@Param("fromIP")String fromIP,@Param("fromPort")String fromPort,@Param("dstIP")String dstIP,
                            @Param("dstPort")String dstPort);
 
-    public String queryCompany(@Param("companyId") String companyId);
 }

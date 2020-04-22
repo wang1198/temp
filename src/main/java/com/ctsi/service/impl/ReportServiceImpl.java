@@ -36,8 +36,8 @@ public class ReportServiceImpl implements ReportService {
      * @return
      */
     @Override
-    public ResultBack importReportingProcess(HttpServletRequest request,MultipartFile file) {
-        return uploadFile(request,file,1,"上传上报流程失败");
+    public ResultBack importReportingProcess(String userName,MultipartFile file) {
+        return uploadFile(userName,file,1,"上传上报流程失败");
     }
 
     /**
@@ -56,8 +56,8 @@ public class ReportServiceImpl implements ReportService {
      * @return
      */
     @Override
-    public ResultBack importReceivingProcess(HttpServletRequest request,MultipartFile file) {
-        return uploadFile(request,file,2,"上传接收流程失败");
+    public ResultBack importReceivingProcess(String userName,MultipartFile file) {
+        return uploadFile(userName,file,2,"上传接收流程失败");
     }
 
     /**
@@ -76,8 +76,8 @@ public class ReportServiceImpl implements ReportService {
      * @return
      */
     @Override
-    public ResultBack importJudgementProcess(HttpServletRequest request,MultipartFile file) {
-        return uploadFile(request,file,3,"上传研判流程失败");
+    public ResultBack importJudgementProcess(String userName,MultipartFile file) {
+        return uploadFile(userName,file,3,"上传研判流程失败");
     }
 
     /**
@@ -96,8 +96,8 @@ public class ReportServiceImpl implements ReportService {
      * @return
      */
     @Override
-    public ResultBack importDisposalProcess(HttpServletRequest request,MultipartFile file) {
-        return uploadFile(request,file,4,"上传处置流程失败");
+    public ResultBack importDisposalProcess(String userName,MultipartFile file) {
+        return uploadFile(userName,file,4,"上传处置流程失败");
     }
 
     /**
@@ -193,7 +193,7 @@ public class ReportServiceImpl implements ReportService {
     }
 
     //上传公共方法
-    private ResultBack uploadFile(HttpServletRequest request,MultipartFile file, Integer reportType, String msg){
+    private ResultBack uploadFile(String userName,MultipartFile file, Integer reportType, String msg){
         if (file==null||file.isEmpty()) {
             return ResultBack.build(-1,"请选择上传的文件！");
         }
@@ -207,7 +207,6 @@ public class ReportServiceImpl implements ReportService {
             report.setFileName(fileName);
             report.setReportType(reportType);
             report.setCreateTime(new Date());
-            String userName = request.getRemoteUser();
             report.setCreateBy(userName);
             reportMapper.addReport(report);
             Map<String,Object> map = new HashMap<>();

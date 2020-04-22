@@ -23,13 +23,14 @@ public class CscpDicFileServiceImpl implements CscpDicFileService {
     public void importDic(List<CscpDic> dics) {
         for (CscpDic dic:dics) {
             if(dic.getDicTypeInfo()!=null)
-                dic.setDicType(Integer.valueOf(dic.getDicTypeInfo().split("|")[0]));
+                dic.setDicType(Integer.valueOf(dic.getDicTypeInfo().split("-")[0]));
             cscpDicDao.insert(dic);
         }
     }
 
     @Override
     public List<CscpDic> exportDic(CscpDic dic) {
-        return cscpDicDao.getDicList(dic);
+        List<CscpDic> dics=cscpDicDao.getDicList(dic);
+        return dics;
     }
 }

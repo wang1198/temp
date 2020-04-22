@@ -57,9 +57,8 @@ public class CscpBusinessController {
         return ResultBack.ok();
     }
     @PostMapping(value = "/importBusiness")
-    public ResultBack readExcel(@RequestParam("file") MultipartFile file,String orgId,String orgName){
+    public void readExcel(@RequestParam("file") MultipartFile file,String orgId,String orgName){
         List<CscpBusiness> list = ExcelUtil.readExcel(CscpBusiness.class, file);
-        List<String> result=businessService.importBusiness(list,orgId,orgName);
-        return ResultBack.ok(result);
+        businessService.importBusiness(list,orgId,orgName);
     }
 }

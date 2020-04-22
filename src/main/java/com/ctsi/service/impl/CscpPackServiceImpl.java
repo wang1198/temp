@@ -30,11 +30,13 @@ public class CscpPackServiceImpl implements CscpPackService {
     private CscpPackMapper packMapper;
     @Override
     @DS
+    @Transactional(value = "tx2",propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void insert(CscpPackDTO cscpPackage){
         CscpPackage pack= packMapper.toEntity(cscpPackage);
         packDao.insert(pack);
         List<String> funcs=cscpPackage.getFuncIDs();
         packDao.insert_pack_func(pack.getId(),funcs);
+        return;
     }
 
     @Override
@@ -42,18 +44,22 @@ public class CscpPackServiceImpl implements CscpPackService {
         updateTrans(cscpPackage);
     }
 
+    @Transactional(value="tx2",propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void updateTrans(CscpPackDTO cscpPackage) {
         CscpPackage pack= packMapper.toEntity(cscpPackage);
         packDao.update(pack);
         packDao.delete_pack_func(pack.getId());
         List<String> funcs=cscpPackage.getFuncIDs();
         packDao.insert_pack_func(pack.getId(),funcs);
+        return;
     }
 
     @Override
+    @Transactional(value="tx2",propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void delete(String id) {
         packDao.delete(id);
         packDao.delete_pack_func(id);
+        return;
     }
 
     @Override
